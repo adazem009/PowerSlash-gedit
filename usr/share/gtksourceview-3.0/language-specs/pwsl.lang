@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+ Copyright (C) 2021 adazem009
+
+ GtkSourceView is free software; you can redistribute it and/or
+ modify it under the terms of the GNU Lesser General Public
+ License as published by the Free Software Foundation; either
+ version 2.1 of the License, or (at your option) any later version.
+
+ GtkSourceView is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ Lesser General Public License for more details.
+
+ You should have received a copy of the GNU Lesser General Public License
+ along with this library; if not, see <http://www.gnu.org/licenses/>.
+
+-->
+<language id="pwsl" name="PowerSlash" version="2.0" _section="Source">
+  <metadata>
+    <property name="mimetypes">text/x-csrc</property>
+    <property name="globs">*.pwsl;*.pwsle</property>
+    <property name="line-comment-start">//</property>
+  </metadata>
+
+  <styles>
+    <style id="comment" name="Comment" map-to="def:comment"/>
+    <style id="string" name="String" map-to="def:string"/>
+    <style id="external" name="External" map-to="def:constant"/>
+    <style id="declaration" name="Declaration" map-to="def:constant"/>
+    <style id="function" name="Function" map-to="def:type"/>
+    <style id="keyword" name="Keyword" map-to="def:keyword"/>
+    <style id="escape" name="Backslash escape" map-to="def:special-constant"/>
+    <style id="boolean" name="Boolean value" map-to="def:boolean"/>
+    <style id="number" name="Number" map-to="def:decimal"/>
+  </styles>
+
+  <definitions>
+
+    <context id="string" style-ref="string" end-at-line-end="true">
+      <start>"</start>
+      <end>"</end>
+    </context>
+
+    <context id="string-2" style-ref="string" end-at-line-end="true">
+      <start>'</start>
+      <end>'</end>
+    </context>
+
+    <context id="line-comment" style-ref="comment" end-at-line-end="true">
+      <start>//</start>
+      <include>
+        <context ref="def:in-line-comment"/>
+      </include>
+    </context>
+
+    <context id="externals" style-ref="external">
+      <keyword>include</keyword>
+    </context>
+
+    <context id="declarations" style-ref="declaration">
+      <keyword>define</keyword>
+      <keyword>linkdef</keyword>
+    </context>
+
+    <context id="keywords" style-ref="keyword">
+      <keyword>if</keyword>
+      <keyword>else</keyword>
+      <keyword>elseif</keyword>
+      <keyword>endif</keyword>
+      <keyword>repeat</keyword>
+      <keyword>while</keyword>
+      <keyword>endloop</keyword>
+      <keyword>exit</keyword>
+      <keyword>warp</keyword>
+      <keyword>endwarp</keyword>
+    </context>
+    
+    <context id="builtin-functions" style-ref="function">
+      <keyword>print</keyword>
+      <keyword>read</keyword>
+      <keyword>keywait</keyword>
+      <keyword>clear</keyword>
+      <keyword>calc</keyword>
+      <keyword>set</keyword>
+      <keyword>round</keyword>
+      <keyword>while</keyword>
+      <keyword>getletter</keyword>
+      <keyword>getlength</keyword>
+      <keyword>setlist</keyword>
+      <keyword>append</keyword>
+      <keyword>replace</keyword>
+      <keyword>insert</keyword>
+      <keyword>getitem</keyword>
+      <keyword>getlistlength</keyword>
+      <keyword>run</keyword>
+      <keyword>source</keyword>
+      <keyword>getkey</keyword>
+      <keyword>bgcolor</keyword>
+      <keyword>wait</keyword>
+      <keyword>beep</keyword>
+      <keyword>deleteitem</keyword>
+      <keyword>shutdown</keyword>
+      <keyword>reboot</keyword>
+      <keyword>bintolist</keyword>
+      <keyword>listtobin</keyword>
+      <keyword>readvar</keyword>
+      <keyword>getindex</keyword>
+      <keyword>smc_getarg</keyword>
+      <keyword>add</keyword>
+      <keyword>sub</keyword>
+      <keyword>multi</keyword>
+      <keyword>div</keyword>
+      <keyword>mod</keyword>
+      <keyword>abs</keyword>
+      <keyword>getletterindex</keyword>
+      <keyword>smc_skiploop</keyword>
+      <keyword>smc_skipif</keyword>
+      <keyword>smc_if</keyword>
+      <keyword>deletechar</keyword>
+    </context>
+
+    <define-regex id="escape" extended="true">
+      \\(                   # leading backslash
+      [^,"]* |              # escaped string
+      )
+    </define-regex>
+    
+    <context id="escape" style-ref="escape">
+          <match>\%{escape}</match>
+    </context>
+
+    <context id="boolean" style-ref="boolean">
+      <keyword>false</keyword>
+      <keyword>true</keyword>
+    </context>
+
+    <context id="numeric" style-ref="number">
+      <match extended="true">
+        (\b([0-9]+|0[xX][0-9a-fA-F]+)[Ll]?\b|
+        \b(([0-9]+[Ee][-]?[0-9]+|
+        ([0-9]*\.[0-9]+|[0-9]+\.)([Ee][-]?[0-9]+)?)[fFdD]?|
+        [0-9]+[FfDd]))
+      </match>
+    </context>
+
+    <context id="pwsl">
+      <include>
+        <context ref="string"/>
+        <context ref="string-2"/>
+        <context ref="line-comment"/>
+        <context ref="externals"/>
+        <context ref="declarations"/>
+        <context ref="keywords"/>
+        <context ref="builtin-functions"/>
+        <context ref="escape"/>
+        <context ref="boolean"/>
+        <context ref="numeric"/>
+      </include>
+    </context>
+
+  </definitions>
+</language>
